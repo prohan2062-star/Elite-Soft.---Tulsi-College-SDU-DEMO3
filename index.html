@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS // Next-Gen Software & Digital Engineering</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: Syne & JetBrains Mono & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  
+</head>
+<body class="relative min-h-screen text-slate-100 selection:bg-indigo-600 selection:text-white">
+
+    <!-- Custom Cursor -->
+    <div id="cursor-dot" class="hidden md:block"></div>
+    <div id="cursor-follower" class="hidden md:block"></div>
+
+    <!-- Background Interactive Particle Canvas -->
+    <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+    
+    <!-- Ambient Blur Glows -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-600/15 blur-[140px] pointer-events-none -z-10 animate-pulse-glow"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-cyan-600/15 blur-[140px] pointer-events-none -z-10 animate-pulse-glow" style="animation-delay: 2s;"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 transition-all duration-300" id="main-nav">
+        <div class="max-w-7xl mx-auto flex items-center justify-between glass-panel px-6 py-3 rounded-2xl border border-white/10 shadow-2xl">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group" data-interactive="true">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-400 p-[2px] transition-transform duration-300 group-hover:rotate-12">
+                    <div class="w-full h-full bg-cyber-base rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-code text-cyan-400 text-lg"></i>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-syne font-black text-xl tracking-wider text-white">NEXUS<span class="text-cyan-400">.</span>DEV</span>
+                    <span class="text-[9px] font-mono tracking-widest text-indigo-400 uppercase">Software Unit</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#services" class="hover:text-cyan-400 transition-colors duration-200" data-interactive="true">Solutions</a>
+                <a href="#stack" class="hover:text-cyan-400 transition-colors duration-200" data-interactive="true">Tech Stack</a>
+                <a href="#portfolio" class="hover:text-cyan-400 transition-colors duration-200" data-interactive="true">Projects</a>
+                <a href="#terminal" class="hover:text-cyan-400 transition-colors duration-200" data-interactive="true">Terminal</a>
+                <a href="#estimator" class="hover:text-cyan-400 transition-colors duration-200" data-interactive="true">Cost Estimator</a>
+            </nav>
+
+            <!-- CTA Button & Mobile Toggle -->
+            <div class="flex items-center space-x-4">
+                <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-semibold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] transition duration-300 transform hover:-translate-y-0.5" data-interactive="true">
+                    <span>Deploy Project</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2" aria-label="Toggle Navigation">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel mt-3 rounded-2xl p-6 flex-col space-y-4 text-center border border-white/10 animate-fadeIn">
+            <a href="#services" class="text-slate-200 hover:text-cyan-400 py-2 block font-medium mobile-link">Solutions</a>
+            <a href="#stack" class="text-slate-200 hover:text-cyan-400 py-2 block font-medium mobile-link">Tech Stack</a>
+            <a href="#portfolio" class="text-slate-200 hover:text-cyan-400 py-2 block font-medium mobile-link">Projects</a>
+            <a href="#terminal" class="text-slate-200 hover:text-cyan-400 py-2 block font-medium mobile-link">Terminal</a>
+            <a href="#estimator" class="text-slate-200 hover:text-cyan-400 py-2 block font-medium mobile-link">Cost Estimator</a>
+            <a href="#contact" class="px-5 py-3 rounded-xl font-mono text-xs uppercase tracking-wider font-semibold text-white bg-indigo-600 block mobile-link">Get Free Quote</a>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-32 md:pt-40 pb-20">
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-4 md:px-8 mb-24 md:mb-36">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left Hero Content -->
+                <div class="lg:col-span-7 space-y-8">
+                    <!-- Status Badge -->
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-panel border border-cyan-500/20 text-xs font-mono text-cyan-300 animate-float">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="font-semibold tracking-wide uppercase">Engineered for Scale & Speed</span>
+                        <span class="text-slate-500">|</span>
+                        <span class="text-slate-300">Q3 Client Slots Open</span>
+                    </div>
+
+                    <!-- Main Catchphrase -->
+                    <h1 class="text-4xl sm:text-6xl xl:text-7xl font-syne font-extrabold tracking-tight leading-[1.08]">
+                        Architecting <br>
+                        <span class="text-gradient">Hyper-Scale</span> Web &amp; <br>
+                        <span class="text-gradient-neon">Software Systems.</span>
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-400 max-w-xl font-light leading-relaxed">
+                        We transform ambitious concepts into rock-solid enterprise web platforms, custom AI integrations, and reactive mobile architectures with meticulous code craft.
+                    </p>
+
+                    <!-- Hero Actions -->
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <a href="#estimator" class="px-7 py-4 rounded-xl font-mono text-xs uppercase tracking-wider font-bold text-white bg-gradient-to-r from-indigo-600 to-cyan-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all duration-300 flex items-center gap-3 group" data-interactive="true">
+                            <span>Calculate Your Project</span>
+                            <i class="fa-solid fa-calculator text-sm group-hover:rotate-12 transition-transform"></i>
+                        </a>
+                        <a href="#portfolio" class="px-7 py-4 rounded-xl font-mono text-xs uppercase tracking-wider font-semibold text-slate-300 glass-panel hover:text-white hover:border-slate-500 transition-all duration-300 flex items-center gap-3" data-interactive="true">
+                            <span>View Our Work</span>
+                            <i class="fa-solid fa-arrow-down text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Client Trust Icons -->
+                    <div class="pt-6 border-t border-white/5 flex flex-wrap items-center gap-6 text-slate-500 text-xs font-mono">
+                        <span>TRUSTED PROTOCOLS:</span>
+                        <span class="flex items-center gap-2 hover:text-slate-300 transition-colors"><i class="fa-brands fa-react text-cyan-400 text-base"></i> React Next.js</span>
+                        <span class="flex items-center gap-2 hover:text-slate-300 transition-colors"><i class="fa-brands fa-node-js text-emerald-400 text-base"></i> Node & Go</span>
+                        <span class="flex items-center gap-2 hover:text-slate-300 transition-colors"><i class="fa-brands fa-aws text-amber-400 text-base"></i> AWS Cloud</span>
+                    </div>
+                </div>
+
+                <!-- Right Hero: Cybernetic Interactive Console -->
+                <div class="lg:col-span-5">
+                    <div class="tilt-card glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl relative overflow-hidden group">
+                        <!-- Neon Accent borders -->
+                        <div class="absolute -top-20 -right-20 w-44 h-44 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute -bottom-20 -left-20 w-44 h-44 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <!-- Card Header Mock -->
+                        <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-server text-cyan-400"></i> cluster-node-alpha: active
+                            </span>
+                        </div>
+
+                        <!-- Live Metrics Preview -->
+                        <div class="space-y-4 font-mono text-xs">
+                            <div class="bg-black/40 p-4 rounded-xl border border-white/5 space-y-2">
+                                <div class="flex justify-between text-slate-400">
+                                    <span>Deployment Health</span>
+                                    <span class="text-emerald-400">99.98% SLA</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full w-[99%]"></div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-black/30 p-3.5 rounded-xl border border-white/5">
+                                    <p class="text-[10px] text-slate-400 uppercase">Avg Response Time</p>
+                                    <p class="text-lg font-bold text-cyan-300 font-syne mt-1">42 ms</p>
+                                    <p class="text-[10px] text-slate-500">Edge CDNs</p>
+                                </div>
+                                <div class="bg-black/30 p-3.5 rounded-xl border border-white/5">
+                                    <p class="text-[10px] text-slate-400 uppercase">Security Rating</p>
+                                    <p class="text-lg font-bold text-indigo-300 font-syne mt-1">A+ ISO-27001</p>
+                                    <p class="text-[10px] text-slate-500">Zero Vulnerabilities</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/40 p-4 rounded-xl border border-white/5">
+                                <div class="text-[11px] text-slate-400 mb-2 flex justify-between">
+                                    <span>Active CI/CD Pipeline</span>
+                                    <span class="text-indigo-400">Build #14902</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-slate-300">
+                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                                    <span class="truncate">Next.js Edge Worker &bull; Automated Deployment</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Micro Button inside Hero Card -->
+                        <div class="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
+                            <span class="text-[11px] font-mono text-slate-400">Interactive Preview</span>
+                            <button onclick="pingServerMock(this)" class="px-3 py-1.5 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/60 text-indigo-300 text-xs font-mono border border-indigo-500/30 transition flex items-center gap-2" data-interactive="true">
+                                <i class="fa-solid fa-bolt"></i> Ping Cluster
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 md:px-8 mb-28">
+            <div class="glass-panel rounded-3xl p-8 border border-white/10 cyber-grid relative">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-white/10">
+                    <div class="text-center pt-4 md:pt-0">
+                        <div class="text-4xl md:text-5xl font-syne font-black text-cyan-400 count-up" data-target="180">0</div>
+                        <div class="text-xs uppercase tracking-widest font-mono text-slate-400 mt-2">Projects Shipped</div>
+                    </div>
+                    <div class="text-center pt-4 md:pt-0">
+                        <div class="text-4xl md:text-5xl font-syne font-black text-indigo-400 count-up" data-target="99.9">0</div>
+                        <div class="text-xs uppercase tracking-widest font-mono text-slate-400 mt-2">Uptime Guarantee (%)</div>
+                    </div>
+                    <div class="text-center pt-4 md:pt-0">
+                        <div class="text-4xl md:text-5xl font-syne font-black text-emerald-400 count-up" data-target="24">0</div>
+                        <div class="text-xs uppercase tracking-widest font-mono text-slate-400 mt-2">Global Awards</div>
+                    </div>
+                    <div class="text-center pt-4 md:pt-0">
+                        <div class="text-4xl md:text-5xl font-syne font-black text-purple-400 count-up" data-target="12">0</div>
+                        <div class="text-xs uppercase tracking-widest font-mono text-slate-400 mt-2">Engineering Specialists</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="max-w-7xl mx-auto px-4 md:px-8 mb-32">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/20">Our Capabilities</span>
+                <h2 class="text-3xl md:text-5xl font-syne font-extrabold text-white">Full-Stack Engineering Spectrum</h2>
+                <p class="text-slate-400 text-sm md:text-base">From responsive Web 3.0 applications to distributed cloud architectures, we build software designed to dominate.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1: Custom Web Apps -->
+                <div class="tilt-card glass-panel rounded-3xl p-8 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-laptop-code text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-syne font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Bespoke Web Development</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">High-performance SPA & SSR web apps using Next.js, React, and Vue. Pixel-perfect, micro-animated, and tailored for SEO mastery.</p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/10 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-cyan-400"></i> Next.js 15 & SSR Optimizations</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-cyan-400"></i> Custom Fluid WebGL / Three.js</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-cyan-400"></i> Sub-second Core Web Vitals</li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Enterprise Software & SaaS -->
+                <div class="tilt-card glass-panel rounded-3xl p-8 border border-white/10 hover:border-indigo-500/40 transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center mb-6 text-indigo-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cubes text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-syne font-bold text-white mb-3 group-hover:text-indigo-400 transition-colors">Enterprise SaaS & Platforms</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Distributed microservice infrastructures, secure multi-tenant architectures, payment systems, and customer portals.</p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/10 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-indigo-400"></i> Go, Node.js & Python Microservices</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-indigo-400"></i> Stripe & Global FinTech Integrations</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-indigo-400"></i> Real-time WebSockets & Streaming</li>
+                    </ul>
+                </div>
+
+                <!-- Card 3: Mobile Apps -->
+                <div class="tilt-card glass-panel rounded-3xl p-8 border border-white/10 hover:border-emerald-500/40 transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-6 text-emerald-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-mobile-screen-button text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-syne font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">Cross-Platform Mobile Apps</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Native-grade iOS & Android applications built with React Native and Flutter. Flawless 60fps animations and offline-first capabilities.</p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/10 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-emerald-400"></i> React Native & Flutter Frameworks</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-emerald-400"></i> Biometric Auth & Secure Hardware Storage</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-emerald-400"></i> App Store & Play Store CI Pipelines</li>
+                    </ul>
+                </div>
+
+                <!-- Card 4: AI & Machine Learning Integrations -->
+                <div class="tilt-card glass-panel rounded-3xl p-8 border border-white/10 hover:border-purple-500/40 transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-6 text-purple-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-brain text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-syne font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">AI & LLM Integration</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Automate operations with generative models, custom vector embeddings, RAG architectures, and AI conversational workflows.</p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/10 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-purple-400"></i> OpenAI & Claude API Integrations</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-purple-400"></i> Pinecone / pgvector Retrieval Systems</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-purple-400"></i> Fine-tuned Business Agents</li>
+                    </ul>
+                </div>
+
+                <!-- Card 5: Cloud DevOps & Site Reliability -->
+                <div class="tilt-card glass-panel rounded-3xl p-8 border border-white/10 hover:border-amber-500/40 transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-6 text-amber-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-syne font-bold text-white mb-3 group-hover:text-amber-400 transition-colors">Cloud Ops & Infrastructure</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Resilient, automated cloud environments using Terraform, Kubernetes, and Docker on AWS, GCP, and Cloudflare Edge networks.</p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/10 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-amber-400"></i> Automated Zero-Downtime Deployments</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-amber-400"></i> Kubernetes & Docker Containers</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-amber-400"></i> DDOS Mitigation & Edge Firewalling</li>
+                    </ul>
+                </div>
+
+                <!-- Card 6: UI/UX & Motion Engineering -->
+                <div class="tilt-card glass-panel rounded-3xl p-8 border border-white/10 hover:border-rose-500/40 transition-all duration-300 relative group overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center mb-6 text-rose-400 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-syne font-bold text-white mb-3 group-hover:text-rose-400 transition-colors">Motion & High-End UX</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Futuristic interfaces with tactile 3D interactions, sound design feedback, buttery smooth frame rates, and human-centric design.</p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/10 pt-4">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-rose-400"></i> Figma Design Systems & Tokens</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-rose-400"></i> Micro-Interactions & Scroll Triggers</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-angle-right text-rose-400"></i> Accessible & Internationalized UI</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="stack" class="max-w-7xl mx-auto px-4 md:px-8 mb-32">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 border border-white/10">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-white/10 gap-4">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-widest text-indigo-400">Production Battle-Tested</span>
+                        <h2 class="text-3xl font-syne font-black text-white mt-2">Modern Technology Core</h2>
+                    </div>
+                    <p class="text-slate-400 text-sm max-w-md font-light">We deliberately select low-latency, modular technologies that provide decades of stability.</p>
+                </div>
+
+                <!-- Grid of Interactive Tech Tags -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4" id="tech-stack-container">
+                    <!-- Tech items generated with hover sound and glow triggers -->
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-cyan-400/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-react text-3xl text-cyan-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">React 19</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Frontend Core</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-white/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-solid fa-bolt text-3xl text-white mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">Next.js</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">SSR / Static</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-blue-400/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-typescript text-3xl text-blue-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">TypeScript</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Type Safety</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-emerald-500/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-node-js text-3xl text-emerald-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">Node / NestJS</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Backend APIs</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-sky-400/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-golang text-3xl text-sky-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">GoLang</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Microservices</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-blue-500/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-python text-3xl text-amber-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">Python AI</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Model Training</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-blue-400/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-solid fa-database text-3xl text-blue-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">PostgreSQL</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Relational DB</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-red-500/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-solid fa-server text-3xl text-red-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">Redis</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">In-Memory Cache</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-cyan-500/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-docker text-3xl text-cyan-400 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">Docker</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Containers</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-blue-600/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-solid fa-dharmachakra text-3xl text-blue-500 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">Kubernetes</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Orchestration</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-amber-400/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-aws text-3xl text-amber-500 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">AWS</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Cloud Infra</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center hover:bg-white/10 hover:border-violet-500/50 hover:scale-105 transition-all duration-200" data-interactive="true">
+                        <i class="fa-brands fa-graphql text-3xl text-pink-500 mb-2"></i>
+                        <span class="font-mono text-xs font-semibold text-slate-200">GraphQL</span>
+                        <span class="text-[10px] text-slate-400 mt-0.5">Query Layer</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="max-w-7xl mx-auto px-4 md:px-8 mb-32">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/20">Featured Work</span>
+                    <h2 class="text-3xl md:text-5xl font-syne font-extrabold text-white mt-3">Engineered Flagships</h2>
+                </div>
+                
+                <!-- Category Tabs -->
+                <div class="flex items-center space-x-2 bg-black/40 p-1.5 rounded-xl border border-white/10 font-mono text-xs">
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium transition" onclick="filterProjects('all', this)" data-interactive="true">All</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-slate-400 hover:text-white transition" onclick="filterProjects('web', this)" data-interactive="true">Web Apps</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-slate-400 hover:text-white transition" onclick="filterProjects('saas', this)" data-interactive="true">SaaS & FinTech</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg text-slate-400 hover:text-white transition" onclick="filterProjects('mobile', this)" data-interactive="true">Mobile</button>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="portfolio-grid">
+                <!-- Project 1 -->
+                <div class="project-item tilt-card glass-panel rounded-3xl overflow-hidden border border-white/10 group" data-category="saas">
+                    <div class="relative h-64 overflow-hidden bg-slate-900">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-transparent to-transparent z-10"></div>
+                        <!-- Stylized SVG Mockup Visual -->
+                        <div class="w-full h-full p-8 flex items-center justify-center bg-gradient-to-br from-indigo-950/60 to-purple-950/40 group-hover:scale-105 transition-transform duration-500">
+                            <div class="w-full max-w-sm glass-panel p-4 rounded-xl border border-white/20 shadow-2xl">
+                                <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-3">
+                                    <span class="text-xs font-mono text-cyan-400">Quantum Trading Hub</span>
+                                    <span class="text-[10px] text-emerald-400 font-mono">+38.4% Live</span>
+                                </div>
+                                <div class="h-20 flex items-end gap-1.5 pt-2">
+                                    <div class="flex-1 bg-indigo-500/40 rounded-t h-1/3"></div>
+                                    <div class="flex-1 bg-indigo-500/60 rounded-t h-2/3"></div>
+                                    <div class="flex-1 bg-indigo-500/80 rounded-t h-1/2"></div>
+                                    <div class="flex-1 bg-cyan-400 rounded-t h-4/5 animate-pulse"></div>
+                                    <div class="flex-1 bg-indigo-500/60 rounded-t h-3/5"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">FinTech Platform</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-syne font-bold text-white mb-2">Aetheria: Decentralized Liquidity Protocol</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Engineered institutional trading dashboard processing $40M+ in weekly volume with real-time reactive charting and sub-second socket pipelines.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Next.js 14</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Go Microservices</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">WebSockets</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Redis Edge</span>
+                        </div>
+                        <button onclick="openDemoModal('Aetheria Liquidity Platform', 'Sub-second real-time FinTech engine supporting 12,000 concurrent trade sockets.')" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-cyan-400 text-xs font-mono font-semibold border border-white/10 hover:border-cyan-400/40 transition flex items-center justify-center gap-2" data-interactive="true">
+                            <span>Inspect Architecture</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-item tilt-card glass-panel rounded-3xl overflow-hidden border border-white/10 group" data-category="web">
+                    <div class="relative h-64 overflow-hidden bg-slate-900">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-transparent to-transparent z-10"></div>
+                        <div class="w-full h-full p-8 flex items-center justify-center bg-gradient-to-br from-cyan-950/60 to-blue-950/40 group-hover:scale-105 transition-transform duration-500">
+                            <div class="w-full max-w-sm glass-panel p-4 rounded-xl border border-white/20 shadow-2xl">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></div>
+                                    <span class="text-xs font-mono text-white">Synapse Neural Studio</span>
+                                </div>
+                                <div class="p-3 bg-black/50 rounded-lg text-slate-300 font-mono text-[11px] space-y-1">
+                                    <div class="text-cyan-400">&gt; Prompt: Generate hyper-structure</div>
+                                    <div class="text-slate-500">&gt; Status: 256 vector nodes active</div>
+                                    <div class="text-emerald-400">&gt; Compilation finished [88ms]</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">AI Generative App</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-syne font-bold text-white mb-2">Synapse: Vector AI Content Engine</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Autonomous enterprise workflow generator featuring dynamic canvas workspace, multi-agent reasoning, and instant code export.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">React Three Fiber</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">FastAPI</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Vector Embeddings</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Tailwind</span>
+                        </div>
+                        <button onclick="openDemoModal('Synapse Vector Engine', 'Realtime collaborative canvas driven by Python FastAPI and WebGL acceleration.')" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-cyan-400 text-xs font-mono font-semibold border border-white/10 hover:border-cyan-400/40 transition flex items-center justify-center gap-2" data-interactive="true">
+                            <span>Inspect Architecture</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-item tilt-card glass-panel rounded-3xl overflow-hidden border border-white/10 group" data-category="mobile">
+                    <div class="relative h-64 overflow-hidden bg-slate-900">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-transparent to-transparent z-10"></div>
+                        <div class="w-full h-full p-8 flex items-center justify-center bg-gradient-to-br from-emerald-950/60 to-slate-950 group-hover:scale-105 transition-transform duration-500">
+                            <div class="w-48 glass-panel p-3 rounded-2xl border border-white/20 shadow-2xl flex flex-col items-center">
+                                <div class="w-12 h-1 bg-white/20 rounded-full mb-3"></div>
+                                <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-2">
+                                    <i class="fa-solid fa-heart-pulse text-lg"></i>
+                                </div>
+                                <span class="text-[11px] font-mono text-white">Pulse BioHealth</span>
+                                <span class="text-[9px] font-mono text-slate-400">Zero Latency Telemetry</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">iOS &amp; Android App</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-syne font-bold text-white mb-2">Pulse: Health Telemetry &amp; Bio Analytics</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Cross-platform iOS and Android mobile app capturing real-time wearable sensor metrics with encrypted HIPAA-compliant database synchronization.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">React Native</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Bluetooth BLE</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Encrypted SQLite</span>
+                        </div>
+                        <button onclick="openDemoModal('Pulse BioHealth Telemetry', 'Mobile app synchronized with BLE devices with zero packet loss.')" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-cyan-400 text-xs font-mono font-semibold border border-white/10 hover:border-cyan-400/40 transition flex items-center justify-center gap-2" data-interactive="true">
+                            <span>Inspect Architecture</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-item tilt-card glass-panel rounded-3xl overflow-hidden border border-white/10 group" data-category="saas">
+                    <div class="relative h-64 overflow-hidden bg-slate-900">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-transparent to-transparent z-10"></div>
+                        <div class="w-full h-full p-8 flex items-center justify-center bg-gradient-to-br from-violet-950/60 to-indigo-950/40 group-hover:scale-105 transition-transform duration-500">
+                            <div class="w-full max-w-xs glass-panel p-4 rounded-xl border border-white/20 shadow-2xl">
+                                <div class="flex justify-between items-center text-xs font-mono mb-2">
+                                    <span class="text-violet-400">HyperLogistics</span>
+                                    <span class="text-slate-400">98 Routes</span>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="h-2 rounded bg-indigo-500/50 w-full"></div>
+                                    <div class="h-2 rounded bg-indigo-500/30 w-3/4"></div>
+                                    <div class="h-2 rounded bg-cyan-500/50 w-1/2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-purple-500/20 text-purple-300 border border-purple-500/40">Enterprise SaaS</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-syne font-bold text-white mb-2">OmniChain: Autonomous Freight Logistics</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6">Multi-modal supply chain dispatching engine with route-optimizing genetic algorithms, live GPS geofencing, and automated invoicing.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">TypeScript</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">NestJS</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">PostgreSQL</span>
+                            <span class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/5 text-slate-300">Mapbox GL</span>
+                        </div>
+                        <button onclick="openDemoModal('OmniChain Logistics Suite', 'Route tracking matrix with genetic route optimization algorithms.')" class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 text-cyan-400 text-xs font-mono font-semibold border border-white/10 hover:border-cyan-400/40 transition flex items-center justify-center gap-2" data-interactive="true">
+                            <span>Inspect Architecture</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="terminal" class="max-w-5xl mx-auto px-4 md:px-8 mb-32">
+            <div class="glass-panel rounded-3xl border border-white/15 overflow-hidden shadow-2xl">
+                <!-- Terminal Top Bar -->
+                <div class="bg-black/60 px-6 py-4 flex items-center justify-between border-b border-white/10">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <span class="ml-4 font-mono text-xs text-slate-400">nexus-cli // bash &bull; v4.2.1-prod</span>
+                    </div>
+                    <div class="text-[11px] font-mono text-cyan-400 hidden sm:block">
+                        Type: <span class="bg-white/10 px-1.5 py-0.5 rounded text-white font-bold">help</span> to begin
+                    </div>
+                </div>
+
+                <!-- Terminal Body -->
+                <div class="p-6 md:p-8 font-mono text-xs md:text-sm bg-black/80 min-h-[320px] max-h-[460px] overflow-y-auto space-y-3" id="terminal-screen">
+                    <div class="text-slate-400">
+                        Welcome to <span class="text-cyan-400 font-bold">NEXUS SYSTEM KERNEL</span> [Version 10.0.24]<br>
+                        Interactive developer prompt active. Connect with engineering directly.
+                    </div>
+                    <div class="text-slate-500">Available commands: <span class="text-indigo-400">services</span>, <span class="text-indigo-400">stack</span>, <span class="text-indigo-400">quote</span>, <span class="text-indigo-400">team</span>, <span class="text-indigo-400">clear</span></div>
+                    <div id="terminal-history" class="space-y-3"></div>
+                    <div class="flex items-center space-x-2 text-cyan-400 pt-2">
+                        <span>root@nexus:~$</span>
+                        <input type="text" id="terminal-input" class="flex-1 bg-transparent border-none outline-none text-white font-mono focus:ring-0 p-0" placeholder="type a command..." autocomplete="off" spellcheck="false" data-interactive="true">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="estimator" class="max-w-5xl mx-auto px-4 md:px-8 mb-32">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 border border-white/15 relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="text-center max-w-xl mx-auto mb-10 space-y-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/20">Instant Calculator</span>
+                    <h2 class="text-3xl font-syne font-black text-white">Interactive Project Estimator</h2>
+                    <p class="text-slate-400 text-xs md:text-sm">Configure your technical requirements to receive a real-time ballpark budget and timeline estimation.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Config Controls -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- Project Type -->
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-slate-300 mb-2">1. Select Platform Nature</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button type="button" class="estimator-type-btn p-3 rounded-xl border border-indigo-500 bg-indigo-600/20 text-white font-mono text-xs text-center transition" data-price="3500" data-weeks="4" onclick="selectEstType(this)" data-interactive="true">
+                                    Web Application
+                                </button>
+                                <button type="button" class="estimator-type-btn p-3 rounded-xl border border-white/10 bg-black/40 hover:border-white/30 text-slate-300 font-mono text-xs text-center transition" data-price="6500" data-weeks="8" onclick="selectEstType(this)" data-interactive="true">
+                                    SaaS &amp; Cloud Platform
+                                </button>
+                                <button type="button" class="estimator-type-btn p-3 rounded-xl border border-white/10 bg-black/40 hover:border-white/30 text-slate-300 font-mono text-xs text-center transition" data-price="5500" data-weeks="6" onclick="selectEstType(this)" data-interactive="true">
+                                    Mobile App (iOS/And)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Scope & Pages Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs font-mono mb-2">
+                                <span class="text-slate-300">2. Complexity / Screens</span>
+                                <span class="text-cyan-400 font-bold" id="screens-label">6 Screens</span>
+                            </div>
+                            <input type="range" id="screens-slider" min="1" max="25" value="6" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400" oninput="updateEstimator()">
+                        </div>
+
+                        <!-- Feature Add-ons -->
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-slate-300 mb-3">3. Advanced Modules</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center space-x-3 p-3 rounded-xl bg-black/30 border border-white/10 hover:border-white/20 transition cursor-pointer" data-interactive="true">
+                                    <input type="checkbox" class="estimator-addon rounded bg-slate-900 border-white/20 text-indigo-600 focus:ring-0" data-price="1200" data-weeks="1" onchange="updateEstimator()">
+                                    <span class="text-xs font-mono text-slate-300">Custom AI / LLM Integration</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-3 rounded-xl bg-black/30 border border-white/10 hover:border-white/20 transition cursor-pointer" data-interactive="true">
+                                    <input type="checkbox" class="estimator-addon rounded bg-slate-900 border-white/20 text-indigo-600 focus:ring-0" data-price="800" data-weeks="1" onchange="updateEstimator()">
+                                    <span class="text-xs font-mono text-slate-300">Stripe Payment Gateway</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-3 rounded-xl bg-black/30 border border-white/10 hover:border-white/20 transition cursor-pointer" data-interactive="true">
+                                    <input type="checkbox" class="estimator-addon rounded bg-slate-900 border-white/20 text-indigo-600 focus:ring-0" data-price="1500" data-weeks="2" onchange="updateEstimator()">
+                                    <span class="text-xs font-mono text-slate-300">Real-Time WebSockets</span>
+                                </label>
+                                <label class="flex items-center space-x-3 p-3 rounded-xl bg-black/30 border border-white/10 hover:border-white/20 transition cursor-pointer" data-interactive="true">
+                                    <input type="checkbox" class="estimator-addon rounded bg-slate-900 border-white/20 text-indigo-600 focus:ring-0" data-price="900" data-weeks="1" onchange="updateEstimator()">
+                                    <span class="text-xs font-mono text-slate-300">3D WebGL Motion & Visuals</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Total Display -->
+                    <div class="lg:col-span-5 bg-black/60 p-6 md:p-8 rounded-2xl border border-indigo-500/30 flex flex-col justify-between space-y-6">
+                        <div>
+                            <span class="text-[11px] font-mono uppercase tracking-widest text-slate-400">Estimated Investment</span>
+                            <div class="text-4xl md:text-5xl font-syne font-black text-cyan-400 mt-2" id="estimated-cost">$5,300</div>
+                            <div class="text-xs font-mono text-slate-400 mt-1 flex items-center gap-2">
+                                <i class="fa-regular fa-clock text-indigo-400"></i>
+                                <span>Estimated Timeline: <strong class="text-white" id="estimated-timeline">5 - 6 Weeks</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs text-slate-400 font-mono border-t border-white/10 pt-4">
+                            <div class="flex items-center gap-2 text-emerald-400">
+                                <i class="fa-solid fa-check"></i> Includes Source Code Ownership
+                            </div>
+                            <div class="flex items-center gap-2 text-emerald-400">
+                                <i class="fa-solid fa-check"></i> 60-Day Post-Launch SLA Support
+                            </div>
+                            <div class="flex items-center gap-2 text-emerald-400">
+                                <i class="fa-solid fa-check"></i> Enterprise CI/CD Cloud Pipeline
+                            </div>
+                        </div>
+
+                        <a href="#contact" class="w-full py-3.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold text-center text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-600/30 transition block" data-interactive="true">
+                            Lock In This Estimate &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 md:px-8 mb-32">
+            <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+                <span class="text-xs font-mono uppercase tracking-widest text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/20">Client Voices</span>
+                <h2 class="text-3xl md:text-5xl font-syne font-extrabold text-white">What Founders Say</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 text-xs mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">"NEXUS rebuilt our fintech web core from scratch. Page load dropped under 0.4s and our conversion jumped 64% in month one. Simply outstanding engineering."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-sm text-white font-mono">
+                            MR
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-syne font-bold text-white">Marcus Vance</h4>
+                            <p class="text-[11px] font-mono text-slate-400">CTO &bull; Kinesis Trade</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 text-xs mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">"Their motion and 3D UI capability is truly world-class. They don't just write code; they craft engaging sensory products that make users say 'wow'."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-cyan-600 flex items-center justify-center font-bold text-sm text-white font-mono">
+                            EL
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-syne font-bold text-white">Elena Rostova</h4>
+                            <p class="text-[11px] font-mono text-slate-400">Head of Product &bull; NeuroAI</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 text-xs mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6 font-light">"Flawless communication, clean Git repositories, and bulletproof deployment pipelines. They are our permanent offshore software unit."</p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-sm text-white font-mono">
+                            DK
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-syne font-bold text-white">David Kim</h4>
+                            <p class="text-[11px] font-mono text-slate-400">Founder &bull; OmniSync Global</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="max-w-4xl mx-auto px-4 md:px-8 mb-20">
+            <div class="glass-panel rounded-3xl p-8 md:p-14 border border-white/15 relative overflow-hidden">
+                <div class="text-center max-w-xl mx-auto mb-10 space-y-3">
+                    <span class="text-xs font-mono uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-400/20">Initiate Dialogue</span>
+                    <h2 class="text-3xl md:text-5xl font-syne font-extrabold text-white">Let’s Construct Your Vision</h2>
+                    <p class="text-slate-400 text-xs md:text-sm">Submit your specifications. Our lead engineering director responds in less than 4 business hours.</p>
+                </div>
+
+                <!-- Contact Form -->
+                <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-slate-300 mb-2">Your Name</label>
+                            <input type="text" id="contact-name" required placeholder="Alex Mercer" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white font-mono text-xs focus:outline-none focus:border-cyan-400 transition" data-interactive="true">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-slate-300 mb-2">Work Email</label>
+                            <input type="email" id="contact-email" required placeholder="alex@enterprise.com" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white font-mono text-xs focus:outline-none focus:border-cyan-400 transition" data-interactive="true">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-slate-300 mb-2">Estimated Budget Range</label>
+                            <select id="contact-budget" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-slate-300 font-mono text-xs focus:outline-none focus:border-cyan-400 transition" data-interactive="true">
+                                <option value="$5k-$15k">$5,000 - $15,000</option>
+                                <option value="$15k-$30k">$15,000 - $30,000</option>
+                                <option value="$30k-$75k">$30,000 - $75,000</option>
+                                <option value="$75k+">$75,000+</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-slate-300 mb-2">Target Launch Date</label>
+                            <select id="contact-timeline" class="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3.5 text-slate-300 font-mono text-xs focus:outline-none focus:border-cyan-400 transition" data-interactive="true">
+                                <option value="immediate">Immediate (&lt; 1 month)</option>
+                                <option value="quarter">Next 2 - 3 months</option>
+                                <option value="flexible">Flexible / Planning</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono uppercase text-slate-300 mb-2">Project Brief &amp; Architecture Needs</label>
+                        <textarea id="contact-msg" rows="4" required placeholder="Tell us about the software or web app requirements, goals, or target integrations..." class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white font-mono text-xs focus:outline-none focus:border-cyan-400 transition" data-interactive="true"></textarea>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="w-full py-4 rounded-xl font-mono text-xs uppercase tracking-widest font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition duration-300 flex items-center justify-center gap-2 group" data-interactive="true">
+                        <span>Dispatch Project Proposal</span>
+                        <i class="fa-solid fa-paper-plane group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </button>
+                </form>
+
+                <!-- Feedback Message Overlay (No alert) -->
+                <div id="contact-success" class="hidden mt-6 p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-mono text-xs text-center">
+                    <i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i> Signal received! Our tech director will analyze your brief and respond shortly.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/10 relative z-10 bg-black/40">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-cyan-300 text-xs font-bold">
+                    &lt;/&gt;
+                </div>
+                <span class="font-syne font-black text-white text-base">NEXUS SOFTWARE UNIT</span>
+            </div>
+
+            <div class="flex items-center space-x-6 text-slate-400 text-sm">
+                <a href="#services" class="hover:text-cyan-400 transition">Services</a>
+                <a href="#stack" class="hover:text-cyan-400 transition">Tech</a>
+                <a href="#portfolio" class="hover:text-cyan-400 transition">Work</a>
+                <a href="#estimator" class="hover:text-cyan-400 transition">Estimator</a>
+            </div>
+
+            <div class="text-xs font-mono text-slate-500">
+                &copy; 2026 NEXUS. High-Performance Digital Software. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div id="demo-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="glass-panel rounded-3xl max-w-lg w-full p-6 border border-white/20 relative animate-fadeIn">
+            <button onclick="closeDemoModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                    <i class="fa-solid fa-diagram-project"></i>
+                </div>
+                <div>
+                    <h3 id="modal-title" class="font-syne font-bold text-white text-lg">Project Title</h3>
+                    <p class="text-[11px] font-mono text-cyan-400">Architecture Specification</p>
+                </div>
+            </div>
+            <p id="modal-desc" class="text-slate-300 text-xs font-mono mb-6 leading-relaxed">System architecture summary.</p>
+            <div class="bg-black/50 p-4 rounded-xl font-mono text-[11px] text-slate-400 space-y-2 mb-6">
+                <div>&bull; Infrastructure: AWS ECS Fargate + Cloudflare Workers</div>
+                <div>&bull; Continuous Delivery: GitHub Actions with Canary releases</div>
+                <div>&bull; Monitoring: Prometheus + Grafana dashboards</div>
+            </div>
+            <button onclick="closeDemoModal()" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition" data-interactive="true">
+                Close Inspector
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* ----------------------------------------------------
+           1. Interactive Particle Canvas Background
+        ---------------------------------------------------- */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const particles = [];
+        const PARTICLE_COUNT = Math.min(Math.floor(window.innerWidth / 16), 85);
+        let mouseX = -9999;
+        let mouseY = -9999;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                this.radius = Math.random() * 1.8 + 0.8;
+                this.color = Math.random() > 0.5 ? 'rgba(99, 102, 241, ' : 'rgba(6, 182, 212, ';
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+
+                // Mouse interaction repulsion/attraction
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    const force = (120 - dist) / 120;
+                    this.x -= (dx / dist) * force * 1.5;
+                    this.y -= (dy / dist) * force * 1.5;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color + this.alpha + ')';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push(new Particle());
+        }
+
+        function renderCanvas() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Connect nearby particles with cyber lines
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 110) {
+                        const alpha = (1 - dist / 110) * 0.18;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${alpha})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(renderCanvas);
+        }
+        renderCanvas();
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        /* ----------------------------------------------------
+           2. Magnetic Neon Custom Cursor
+        ---------------------------------------------------- */
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-follower');
+        let ringX = 0, ringY = 0;
+        let targetX = 0, targetY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.left = `${targetX}px`;
+            dot.style.top = `${targetY}px`;
+        });
+
+        function animateCursorRing() {
+            ringX += (targetX - ringX) * 0.18;
+            ringY += (targetY - ringY) * 0.18;
+            ring.style.left = `${ringX}px`;
+            ring.style.top = `${ringY}px`;
+            requestAnimationFrame(animateCursorRing);
+        }
+        animateCursorRing();
+
+        // Enlarge cursor when hovering interactive items
+        document.querySelectorAll('a, button, [data-interactive="true"]').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                ring.style.width = '55px';
+                ring.style.height = '55px';
+                ring.style.borderColor = 'rgba(6, 182, 212, 0.9)';
+                ring.style.background = 'rgba(6, 182, 212, 0.15)';
+            });
+            el.addEventListener('mouseleave', () => {
+                ring.style.width = '38px';
+                ring.style.height = '38px';
+                ring.style.borderColor = 'rgba(99, 102, 241, 0.5)';
+                ring.style.background = 'rgba(99, 102, 241, 0.05)';
+            });
+        });
+
+        /* ----------------------------------------------------
+           3. 3D Tilt Card Effects
+        ---------------------------------------------------- */
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+
+        /* ----------------------------------------------------
+           4. Live Numeric Counters on Scroll
+        ---------------------------------------------------- */
+        const counters = document.querySelectorAll('.count-up');
+        let counted = false;
+
+        function checkCounters() {
+            if (counted) return;
+            const triggerBottom = window.innerHeight * 0.85;
+            counters.forEach(counter => {
+                const rect = counter.getBoundingClientRect();
+                if (rect.top < triggerBottom) {
+                    counted = true;
+                    counters.forEach(c => {
+                        const target = parseFloat(c.getAttribute('data-target'));
+                        const isDecimal = target % 1 !== 0;
+                        const duration = 1800;
+                        const startTime = performance.now();
+
+                        function updateCount(currentTime) {
+                            const elapsed = currentTime - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            // Ease out quad
+                            const current = progress * target;
+
+                            c.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+
+                            if (progress < 1) {
+                                requestAnimationFrame(updateCount);
+                            } else {
+                                c.textContent = isDecimal ? target.toFixed(1) : target;
+                            }
+                        }
+                        requestAnimationFrame(updateCount);
+                    });
+                }
+            });
+        }
+        window.addEventListener('scroll', checkCounters);
+        checkCounters();
+
+        /* ----------------------------------------------------
+           5. Interactive Terminal / CLI Logic
+        ---------------------------------------------------- */
+        const termInput = document.getElementById('terminal-input');
+        const termHistory = document.getElementById('terminal-history');
+        const termScreen = document.getElementById('terminal-screen');
+
+        const cliResponses = {
+            help: `Available Commands:
+  • <span class="text-cyan-400">services</span>  : List engineering specialties
+  • <span class="text-cyan-400">stack</span>     : Display core technologies
+  • <span class="text-cyan-400">quote</span>     : Jump to pricing estimator
+  • <span class="text-cyan-400">team</span>      : Show unit composition
+  • <span class="text-cyan-400">ping</span>      : Run latency check
+  • <span class="text-cyan-400">clear</span>     : Flush terminal history`,
+            services: `[SERVICES REPOSITORY]:
+1. Bespoke Web Platforms (Next.js, WebGL)
+2. Microservices Architecture (Go, Node.js)
+3. Native-Grade Mobile (React Native, Flutter)
+4. LLM & Machine Learning Systems (Vector search, Custom agents)`,
+            stack: `[ENGINEERING CORE]:
+Frontend : Next.js 15, TypeScript, Tailwind, Three.js
+Backend  : Go, Python FastAPI, NestJS, GraphQL
+Cloud    : AWS, Cloudflare Edge, Docker, K8s, PostgreSQL, Redis`,
+            team: `[NEXUS SPECIALIST UNIT]:
+12 Engineers & Designers:
+- 4 Principal Full-Stack Architects
+- 3 Cloud & Security Engineers
+- 2 AI & Vector Pipeline Specialists
+- 3 UI/UX & Motion Engineers`,
+            quote: `Redirecting to estimate matrix... (Scroll down to #estimator)`
+        };
+
+        termInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.trim().toLowerCase();
+                if (!cmd) return;
+
+                // Add prompt line
+                const line = document.createElement('div');
+                line.className = 'text-white flex items-center space-x-2';
+                line.innerHTML = `<span class="text-cyan-400">root@nexus:~$</span> <span>${cmd}</span>`;
+                termHistory.appendChild(line);
+
+                const response = document.createElement('div');
+                response.className = 'text-slate-300 pl-4 whitespace-pre-wrap font-mono';
+
+                if (cmd === 'clear') {
+                    termHistory.innerHTML = '';
+                    termInput.value = '';
+                    return;
+                } else if (cmd === 'ping') {
+                    response.innerHTML = `<span class="text-emerald-400">PONG!</span> Latency to edge cluster: 14ms (Healthy)`;
+                } else if (cmd === 'quote') {
+                    response.innerHTML = cliResponses.quote;
+                    document.getElementById('estimator').scrollIntoView({ behavior: 'smooth' });
+                } else if (cliResponses[cmd]) {
+                    response.innerHTML = cliResponses[cmd];
+                } else {
+                    response.innerHTML = `<span class="text-rose-400">Command not recognized: '${cmd}'.</span> Type <span class="text-cyan-300">help</span> for recognized directives.`;
+                }
+
+                termHistory.appendChild(response);
+                termInput.value = '';
+                termScreen.scrollTop = termScreen.scrollHeight;
+            }
+        });
+
+        /* ----------------------------------------------------
+           6. Project Estimator / Calculator Logic
+        ---------------------------------------------------- */
+        let basePrice = 3500;
+        let baseWeeks = 4;
+
+        function selectEstType(btn) {
+            document.querySelectorAll('.estimator-type-btn').forEach(b => {
+                b.classList.remove('border-indigo-500', 'bg-indigo-600/20', 'text-white');
+                b.classList.add('border-white/10', 'bg-black/40', 'text-slate-300');
+            });
+            btn.classList.add('border-indigo-500', 'bg-indigo-600/20', 'text-white');
+            btn.classList.remove('border-white/10', 'bg-black/40', 'text-slate-300');
+
+            basePrice = parseFloat(btn.dataset.price);
+            baseWeeks = parseFloat(btn.dataset.weeks);
+            updateEstimator();
+        }
+
+        function updateEstimator() {
+            const screens = parseInt(document.getElementById('screens-slider').value);
+            document.getElementById('screens-label').textContent = `${screens} Screens`;
+
+            let addonsPrice = 0;
+            let addonsWeeks = 0;
+
+            document.querySelectorAll('.estimator-addon:checked').forEach(addon => {
+                addonsPrice += parseFloat(addon.dataset.price);
+                addonsWeeks += parseFloat(addon.dataset.weeks);
+            });
+
+            // Calculate totals
+            const screenCost = screens * 250;
+            const total = basePrice + screenCost + addonsPrice;
+            const totalWeeksMin = baseWeeks + Math.floor(screens / 4) + addonsWeeks;
+            const totalWeeksMax = totalWeeksMin + 2;
+
+            document.getElementById('estimated-cost').textContent = `$${total.toLocaleString()}`;
+            document.getElementById('estimated-timeline').textContent = `${totalWeeksMin} - ${totalWeeksMax} Weeks`;
+        }
+        updateEstimator();
+
+        /* ----------------------------------------------------
+           7. Portfolio Category Filters
+        ---------------------------------------------------- */
+        function filterProjects(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-indigo-600', 'text-white');
+                b.classList.add('text-slate-400');
+            });
+            btn.classList.add('bg-indigo-600', 'text-white');
+            btn.classList.remove('text-slate-400');
+
+            const items = document.querySelectorAll('.project-item');
+            items.forEach(item => {
+                if (cat === 'all' || item.dataset.category === cat) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        /* ----------------------------------------------------
+           8. Architecture Inspector Modal
+        ---------------------------------------------------- */
+        function openDemoModal(title, desc) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            const modal = document.getElementById('demo-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDemoModal() {
+            const modal = document.getElementById('demo-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        /* ----------------------------------------------------
+           9. Micro Interaction Ping
+        ---------------------------------------------------- */
+        function pingServerMock(button) {
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing 4 Edge Nodes...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                button.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Edge Nodes: 18ms';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 2500);
+            }, 600);
+        }
+
+        /* ----------------------------------------------------
+           10. Contact Form Submission (Safe UI message, no alert)
+        ---------------------------------------------------- */
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const successBox = document.getElementById('contact-success');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Encrypting & Sending...';
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Dispatched Successfully';
+                successBox.classList.remove('hidden');
+                document.getElementById('contact-form').reset();
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Dispatch Project Proposal</span> <i class="fa-solid fa-paper-plane"></i>';
+                }, 4000);
+            }, 1000);
+        }
+
+        /* ----------------------------------------------------
+           11. Mobile Drawer Navigation Toggle
+        ---------------------------------------------------- */
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
+        });
+    </script>
+</body>
+</html>
